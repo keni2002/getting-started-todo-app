@@ -133,7 +133,7 @@ services:
   # ok to hard-code them here.
   ###################################################
   mysql:
-    image: mysql:8.0
+    image: docker.prod.uci.cu/docker-all/library/mysql:8.0
     volumes:
       - todo-mysql-data:/var/lib/mysql
     environment: 
@@ -155,15 +155,15 @@ services:
   # routing rules. In this case, all requests to db.localhost will be forwarded
   # to this service's port 80.
   ###################################################
-  phpmyadmin:
-    image: phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: secret
-    labels:
-      traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
-      traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
+  # phpmyadmin:
+  #   image: phpmyadmin
+  #   environment:
+  #     PMA_HOST: mysql
+  #     PMA_USER: root
+  #     PMA_PASSWORD: secret
+  #   labels:
+  #     traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
+  #     traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
 
 ###################################################
 # Volumes
