@@ -1,7 +1,8 @@
 const GREETINGS = [
-    "eliaberg",
-    "i love you",
-    "Elizabeth, i miss u"
+   "Hello",
+   "Hi",
+   "May your days be..",
+
 ];
 
 module.exports = async (req, res) => {
