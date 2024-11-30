@@ -1,8 +1,8 @@
 ###################################################
 # Stage: base
-# 
-# This base stage ensures all other stages are using the same base image
-# and provides common configuration for all stages, such as the working dir.
+#
+# Esta etapa base garantiza que todas las demás etapas utilicen la misma imagen base
+# y proporciona una configuración común para todas las etapas, como el directorio de trabajo.
 ###################################################
 FROM node:alpine AS base
 WORKDIR /usr/local/app
@@ -12,8 +12,8 @@ WORKDIR /usr/local/app
 ###################################################
 # Stage: client-base
 #
-# This stage is used as the base for the client-dev and client-build stages,
-# since there are common steps needed for each.
+# Esta etapa se utiliza como base para las etapas de desarrollo del cliente y construcción del cliente,
+# ya que hay pasos comunes necesarios para cada una.
 ###################################################
 FROM base AS client-base
 COPY client/package.json client/yarn.lock ./
@@ -26,8 +26,8 @@ COPY client/src ./src
 ###################################################
 # Stage: client-dev
 # 
-# This stage is used for development of the client application. It sets 
-# the default command to start the Vite development server.
+# Esta etapa se utiliza para el desarrollo de la aplicación cliente. Establece
+# el comando predeterminado para iniciar el servidor de desarrollo de Vite.
 ###################################################
 FROM client-base AS client-dev
 CMD ["yarn", "dev"]
@@ -35,8 +35,8 @@ CMD ["yarn", "dev"]
 ###################################################
 # Stage: client-build
 #
-# This stage builds the client application, producing static HTML, CSS, and
-# JS files that can be served by the backend.
+# Esta etapa crea la aplicación cliente y produce archivos HTML, CSS y
+# JS estáticos que pueden ser entregados por el backend.
 ###################################################
 FROM client-base AS client-build
 RUN yarn build
@@ -51,8 +51,8 @@ RUN yarn build
 ###################################################
 # Stage: backend-base
 #
-# This stage is used as the base for the backend-dev and test stages, since
-# there are common steps needed for each.
+# Esta etapa se utiliza como base para las etapas de desarrollo y prueba del backend, ya que
+# existen pasos comunes necesarios para cada una.
 ###################################################
 FROM base AS backend-dev
 COPY backend/package.json backend/yarn.lock ./
@@ -65,9 +65,9 @@ CMD ["yarn", "dev"]
 ###################################################
 # Stage: test
 #
-# This stage runs the tests on the backend. This is split into a separate
-# stage to allow the final image to not have the test dependencies or test
-# cases.
+# Esta etapa ejecuta las pruebas en el backend. Se divide en una etapa
+# separada para permitir que la imagen final no tenga dependencias de prueba ni casos de
+# prueba.
 ###################################################
 FROM backend-dev AS test
 RUN yarn test
@@ -75,11 +75,11 @@ RUN yarn test
 ###################################################
 # Stage: final
 #
-# This stage is intended to be the final "production" image. It sets up the
-# backend and copies the built client application from the client-build stage.
+# Esta etapa está pensada para ser la imagen de "producción" final. Configura el
+# backend y copia la aplicación cliente compilada desde la etapa de compilación del cliente.
 #
-# It pulls the package.json and yarn.lock from the test stage to ensure that
-# the tests run (without this, the test stage would simply be skipped).
+# Extrae package.json y yarn.lock de la etapa de prueba para garantizar que
+# las pruebas se ejecuten (sin esto, la etapa de prueba simplemente se omitiría).
 ###################################################
 FROM base AS final
 ENV NODE_ENV=production
